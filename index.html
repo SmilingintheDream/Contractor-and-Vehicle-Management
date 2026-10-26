@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý Nhà thầu & Phương tiện</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#172033;--muted:#657189;--line:#e2e8f0;--primary:#2457c5;--primary2:#eaf0ff;--red:#b42318;--redbg:#fff0ef;--green:#087443;--greenbg:#e9f8ef;--amber:#945b00;--amberbg:#fff5dc;--shadow:0 8px 24px rgba(20,36,70,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:white;color:var(--ink);border-radius:9px;padding:9px 12px}button:hover{filter:brightness(.98)}button.primary{background:var(--primary);color:white;border-color:var(--primary)}button.danger{color:var(--red);border-color:#f2c4c1;background:#fffafa}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#13264a;color:#fff;padding:24px 16px;display:flex;flex-direction:column;gap:22px}.brand{display:flex;align-items:center;gap:10px;padding:0 8px}.brand-mark{width:36px;height:36px;border-radius:11px;background:#fff;color:#17366e;display:grid;place-items:center;font-weight:800;font-size:17px}.brand h1{font-size:15px;margin:0;line-height:1.25}.brand small{color:#bac9e6}.nav{display:grid;gap:7px}.nav button{background:transparent;color:#d6e0f5;text-align:left;border:0;padding:12px;border-radius:9px}.nav button.active,.nav button:hover{background:#294574;color:white}.side-note{margin-top:auto;color:#b7c7e5;font-size:12px;padding:10px}.main{min-width:0}.topbar{height:70px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:12px}.topbar .crumb{color:var(--muted)}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.content{padding:26px;max-width:1600px;margin:auto}.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}.pagehead h2{font-size:25px;margin:0 0 5px}.pagehead p{margin:0;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}.metric{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:var(--shadow)}.metric .label{color:var(--muted);font-size:12px}.metric .value{font-size:28px;font-weight:750;margin:7px 0 3px}.metric .hint{font-size:12px;color:var(--muted)}.panel{background:white;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}.panel-head h3{margin:0;font-size:16px}.panel-body{padding:18px}.filters{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea,.filters input,.filters select{border:1px solid #cfd8e6;border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);min-width:0}.field textarea{min-height:72px;resize:vertical}.filters input,.filters select{min-width:155px}.gridform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.gridform .wide{grid-column:1/-1}.table-wrap{overflow:auto;width:100%}table{border-collapse:collapse;width:100%;min-width:850px}th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #edf0f5;vertical-align:top}th{background:#f8faff;color:#536079;font-size:12px;font-weight:700;white-space:nowrap;position:sticky;top:0}td{font-size:13px}tbody tr:hover{background:#fafcff}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:5px;border-radius:100px;padding:4px 8px;font-size:11px;font-weight:700;white-space:nowrap}.pill.green{background:var(--greenbg);color:var(--green)}.pill.amber{background:var(--amberbg);color:var(--amber)}.pill.red{background:var(--redbg);color:var(--red)}.pill.blue{background:var(--primary2);color:var(--primary)}.row-actions{display:flex;gap:6px;white-space:nowrap}.row-actions button{padding:5px 8px;font-size:12px}.empty{text-align:center;padding:36px;color:var(--muted)}.notice{border:1px solid #cddcff;background:#f4f7ff;padding:12px 14px;border-radius:10px;color:#24427f;margin-bottom:16px}.notice.warn{border-color:#f1d69a;background:#fff9e9;color:#76500b}.notice.error{border-color:#f0c1be;background:#fff4f3;color:#8d211b}.notice.success{border-color:#b8e3c8;background:#effbf3;color:#14663d}.split{display:grid;grid-template-columns:1fr;gap:18px}.barlist{display:grid;gap:10px}.barrow{display:grid;grid-template-columns:70px 1fr 45px;gap:10px;align-items:center}.bartrack{height:10px;background:#eef2f8;border-radius:20px;overflow:hidden}.barfill{height:100%;background:#416fd0;border-radius:20px}.modal-backdrop{position:fixed;inset:0;background:rgba(15,26,47,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:min(900px,100%);max-height:92vh;overflow:auto;background:white;border-radius:16px;box-shadow:0 20px 70px #101d3a55}.modal-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.modal-head h3{margin:0;font-size:18px}.modal-content{padding:22px}.modal-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.modal-foot .right{display:flex;gap:8px}.small{font-size:12px}.footer-note{font-size:12px;color:var(--muted);padding:0 2px}.hidden{display:none!important}.summary-line{display:flex;gap:8px;flex-wrap:wrap}.summary-chip{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fbfcff}.summary-chip b{font-size:16px;display:block}.checkline{display:flex;align-items:center;gap:8px}.checkline input{min-width:auto}.mobile-menu{display:none}
+@media(max-width:1000px){.app{grid-template-columns:1fr}.sidebar{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.gridform{grid-template-columns:repeat(2,minmax(0,1fr))}.mobile-menu{display:inline-block}}
+@media(max-width:600px){.content{padding:15px}.topbar{padding:0 15px}.pagehead{flex-direction:column}.cards{grid-template-columns:1fr 1fr}.gridform{grid-template-columns:1fr}.gridform .wide{grid-column:auto}.metric .value{font-size:23px}.topbar .crumb{display:none}}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">N</div><div><h1>Quản lý năng lực</h1><small>Nhà thầu & Phương tiện</small></div></div>
+  <nav class="nav">
+    <button data-page="dashboard" class="active">▦ &nbsp; Tổng quan</button>
+    <button data-page="contractors">▤ &nbsp; Danh sách nhà thầu</button>
+    <button data-page="vehicles">▰ &nbsp; Danh sách phương tiện</button>
+    <button data-page="report">◷ &nbsp; Tổng quan năng lực xe</button>
+    <button data-page="data">⇅ &nbsp; Dữ liệu & sao lưu</button>
+  </nav>
+  <div class="side-note">Hỗ trợ đồng bộ đám mây thời gian thực</div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="mobileMenu">☰</button><div class="crumb">Quản lý vận hành / <b id="crumb">Tổng quan</b></div></div>
+    <div class="top-actions"><span id="syncBadge" class="pill amber" style="cursor:pointer;padding:6px 10px" onclick="navigate('data')" title="Bấm để cấu hình đồng bộ đám mây">● Chưa kết nối Đám mây (Lưu cục bộ)</span><button id="exportJsonTop">Xuất bản sao lưu</button><button class="primary" id="quickAdd">＋ Thêm mới</button></div>
+  </header>
+  <div class="content">
+    <section id="page-dashboard" class="page">
+      <div class="pagehead"><div><h2>Tổng quan năng lực</h2></div><div class="filters"><div class="field"><label for="dashboardDate">Ngày thống kê</label><input type="date" id="dashboardDate"></div><button class="primary" onclick="navigate('report')">Xem tổng kê xe →</button></div></div>
+      <div class="cards">
+        <div class="metric"><div class="label">Nhà thầu / đối tác</div><div class="value" id="mContractors">0</div></div>
+        <div class="metric"><div class="label">Số lượng Hợp đồng</div><div class="value" id="mActiveContracts">0</div></div>
+        <div class="metric"><div class="label">Số lượng xe vận chuyển</div><div class="value" id="mVehicles">0</div></div>
+        <div class="metric"><div class="label">Nhà thầu ngưng trong năm</div><div class="value" id="mStopped">0</div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><h3>Hợp đồng gần hết hạn</h3><span class="muted small">Trong 30 ngày tới</span></div><div class="table-wrap"><table><thead><tr><th>Nhà thầu</th><th>Số hợp đồng</th><th>Ngày hết hạn</th><th>Trạng thái</th></tr></thead><tbody id="expiringRows"></tbody></table></div></div>
+    </section>
+    <section id="page-contractors" class="page hidden">
+      <div class="pagehead"><div><h2>Danh sách nhà thầu</h2><p>Mỗi dòng là một hợp đồng; một nhà thầu có thể có nhiều hợp đồng.</p></div><button class="primary" id="addContractor">＋ Thêm hợp đồng</button></div>
+      <div class="panel"><div class="panel-head"><h3>Tra cứu hợp đồng</h3><div class="filters"><input id="contractorSearch" placeholder="Tìm tên, MST, số HĐ..."><select id="contractorStatus"><option value="">Tất cả trạng thái</option><option>Đang hoạt động</option><option>Hết hạn HĐ</option><option>Ngưng hoạt động</option></select><select id="contractorRegion"><option value="">Tất cả khu vực</option></select></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Nhà thầu theo HĐ</th><th>Tên thường gọi</th><th>MST/CCCD</th><th>Số điện thoại</th><th>Số HĐ</th><th>Ngày bắt đầu</th><th>Ngày hết hạn</th><th>Ngày công nợ</th><th>Khu vực</th><th>Nhân sự phụ trách</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="contractorRows"></tbody></table></div></div>
+    </section>
+    <section id="page-vehicles" class="page hidden">
+      <div class="pagehead"><div><h2>Danh sách phương tiện</h2><p>Mỗi dòng là một liên kết xe–hợp đồng. Một xe có thể liên kết nhiều hợp đồng của cùng nhà thầu.</p></div><button class="primary" id="addVehicle">＋ Thêm phương tiện</button></div>
+      <div class="panel"><div class="panel-head"><h3>Tra cứu phương tiện</h3><div class="filters"><input id="vehicleSearch" placeholder="Tìm BSX, số HĐ, nhà thầu..."><select id="vehicleClass"><option value="">Tất cả phân loại</option></select><select id="vehicleStatus"><option value="">Tất cả trạng thái HĐ</option><option>Đang hoạt động</option><option>Hết hạn HĐ</option><option>Ngưng hoạt động</option></select></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Biển số xe</th><th>Biển số rơ moóc</th><th>Tải trọng (tấn)</th><th>Kích thước</th><th>Phân loại</th><th>Mặt hàng chở</th><th>Số HĐ</th><th>Nhà cung cấp</th><th>Trạng thái HĐ</th><th>Thao tác</th></tr></thead><tbody id="vehicleRows"></tbody></table></div></div>
+    </section>
+    <section id="page-report" class="page hidden">
+      <div class="pagehead"><div><h2>Tổng quan năng lực xe</h2></div><div class="filters"><div class="field"><label for="reportDate">Ngày thống kê</label><input type="date" id="reportDate"></div><button class="primary" id="runReport">Cập nhật thống kê</button><button id="downloadReport">Xuất CSV báo cáo</button></div></div>
+      <div class="cards">
+        <div class="metric"><div class="label">Tổng số lượng xe</div><div class="value" id="rVehicleCount">0</div></div>
+        <div class="metric"><div class="label">Tổng số xe tải</div><div class="value" id="rTruckCount">0</div></div>
+        <div class="metric"><div class="label">Tổng số xe cont</div><div class="value" id="rContCount">0</div></div>
+        <div class="metric"><div class="label">Xe ngưng hợp tác trong năm</div><div class="value" id="rStoppedVehicles">0</div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><h3>Số xe theo phân loại tải trọng</h3><span class="muted small" id="reportDateLabel"></span></div><div class="panel-body"><div id="reportBars" class="barlist"></div></div><div class="table-wrap"><table><thead><tr><th>Phân loại tải trọng</th><th>Số lượng xe</th><th>Tỷ trọng số xe</th></tr></thead><tbody id="reportRows"></tbody><tfoot id="reportFoot"></tfoot></table></div></div>
+      <div class="panel"><div class="panel-head"><h3>Số lượng xe theo khu vực</h3></div><div class="table-wrap"><table><thead><tr><th>Khu vực</th><th>Số lượng xe tải</th><th>Số lượng xe cont</th></tr></thead><tbody id="regionReportRows"></tbody></table></div></div>
+    </section>
+    <section id="page-data" class="page hidden">
+      <div class="pagehead"><div><h2>Dữ liệu & sao lưu</h2><p>Quản lý dữ liệu trên trình duyệt, nhập/xuất bản sao lưu.</p></div></div>
+      <div class="panel" style="border-color:#93b4ff">
+  <div class="panel-head" style="background:#f4f7ff">
+    <h3>☁️ Đồng bộ Đám mây thời gian thực (Dùng chung nhiều người)</h3>
+    <span id="cloudStatusText" class="pill amber">Đang chạy cục bộ</span>
+  </div>
+  <div class="panel-body">
+    <p style="margin-top:0">Dán <b>Database URL</b>
+    <div class="filters" style="margin-bottom:10px">
+      <input id="firebaseDbUrl" style="flex:1;min-width:280px" placeholder="https://your-project-default-rtdb.firebasedatabase.app">
+      <button class="primary" id="saveCloudUrl">Kết nối & Đồng bộ ngay</button>
+      <button id="copyShareLink">📋 Copy Link chia sẻ (kèm cấu hình)</button>
+      <button class="danger" id="disconnectCloud">Ngắt kết nối</button>
+    </div>
+  </div>
+</div>
+      <div class="split">
+        <div class="panel"><div class="panel-head"><h3>Sao lưu và phục hồi</h3></div><div class="panel-body"><p>Xuất toàn bộ nhà thầu và phương tiện ra tệp JSON để lưu trữ hoặc chuyển sang máy khác.</p><div class="filters"><button class="primary" id="exportJson">Tải bản sao lưu JSON</button><label class="field"><span class="muted small">Nhập bản sao lưu JSON</span><input type="file" id="importJson" accept=".json,application/json"></label></div><p class="small muted">Khi nhập, dữ liệu hiện có sẽ được thay thế bằng dữ liệu trong tệp.</p></div></div>
+        <div class="panel"><div class="panel-head"><h3>Quản lý dữ liệu thử</h3></div><div class="panel-body"><p>Xóa toàn bộ dữ liệu trên trình duyệt này. Thao tác không thể hoàn tác nếu chưa xuất bản sao lưu.</p><button class="danger" id="clearData">Xóa toàn bộ dữ liệu</button></div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><h3>Quy ước nghiệp vụ đang áp dụng</h3></div><div class="panel-body"><ul><li>Mỗi dòng trong danh sách nhà thầu là một hợp đồng; số hợp đồng phải duy nhất.</li><li>Một xe thuộc một nhà thầu; có thể xuất hiện ở nhiều hợp đồng của cùng nhà thầu.</li><li>Trạng thái Đang hoạt động: tính vào năng lực không phụ thuộc ngày hết hạn HĐ.</li><li>Trạng thái Hết hạn HĐ: tính đến hết ngày hết hạn hợp đồng.</li><li>Trạng thái Ngưng hoạt động: tính trước ngày ngưng hợp tác, không tính từ ngày ngưng trở đi.</li><li>Xe có nhiều hợp đồng chỉ cần một hợp đồng đủ điều kiện là được tính; mỗi BSX chỉ tính một lần.</li><li>Thông tin xe giữa các hợp đồng phải nhất quán; ứng dụng cảnh báo chứ không tự chọn dữ liệu thay thế.</li></ul></div></div>
+    </section>
+  </div>
+</main>
+</div>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div class="modal-head"><h3 id="modalTitle">Thêm mới</h3><button id="closeModal">✕</button></div><form id="editForm"><div class="modal-content" id="modalFields"></div><div class="modal-foot"><div id="modalHint" class="small muted"></div><div class="right"><button type="button" id="cancelModal">Hủy</button><button type="submit" class="primary">Lưu dữ liệu</button></div></div></form></div></div>
+<div id="toast" style="position:fixed;bottom:20px;right:20px;background:#172033;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:20;max-width:90vw"></div>
+<script>
+const REGIONS=['Huế','Hồ Chí Minh','Miền Đông','Miền Tây','Tây Ninh','Xuất kho','CTNH'];
+const STATUSES=['Đang hoạt động','Hết hạn HĐ','Ngưng hoạt động'];
+const CARGO_TYPES=['Phế liệu','CTCN','CTSH','CTNH'];
+function classifyPayload(payload){const n=Number(payload);if(!Number.isFinite(n)||n<0)return '';if(n<=3.5)return '2T';if(n<=6.5)return '5T';if(n<=9)return '8T';if(n<=12.5)return '10T';if(n<=16.5)return '15T';if(n<22)return '18T';return 'Cont';}
+function normalizeCargo(value){if(Array.isArray(value))return value.filter(x=>CARGO_TYPES.includes(x));if(!value)return [];const s=String(value);return CARGO_TYPES.filter(x=>s.split(/[,;|]/).map(y=>y.trim()).includes(x));}
+const $=id=>document.getElementById(id);
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const DEFAULT_FIREBASE_DB_URL = 'https://web-bang-ke-hoach-default-rtdb.asia-southeast1.firebasedatabase.app/';
+
+let db={contractors:[],vehicles:[]}, editState=null, currentPage='dashboard', lastReport=null;
+let cloudRef=null, isApplyingRemote=false;
+
+function normalizeDb(raw){
+ const safe={
+   contractors: Array.isArray(raw?.contractors)?raw.contractors:[],
+   vehicles: Array.isArray(raw?.vehicles)?raw.vehicles:[]
+ };
+ safe.vehicles.forEach(v=>{v.className=classifyPayload(v.payload);v.cargo=normalizeCargo(v.cargo)});
+ return safe;
+}
+
+try{
+ const saved=localStorage.getItem('ncc_vehicle_manager_v1');
+ if(saved){db=normalizeDb(JSON.parse(saved));}
+}catch(e){}
+
+function updateSyncStatus(state, text){
+ const badge=$('syncBadge'), st=$('cloudStatusText');
+ if(!badge||!st)return;
+ badge.className='pill '+state;
+ st.className='pill '+state;
+ badge.textContent=text;
+ st.textContent=text;
+}
+
+function save(){
+ localStorage.setItem('ncc_vehicle_manager_v1',JSON.stringify(db));
+ renderAll();
+ if(cloudRef && !isApplyingRemote){
+   updateSyncStatus('blue','↻ Đang đồng bộ lên đám mây...');
+   cloudRef.set({
+     contractors: db.contractors,
+     vehicles: db.vehicles,
+     updatedAt: new Date().toISOString()
+   }).then(()=>{
+     updateSyncStatus('green','☁️ Đã đồng bộ đám mây (Trực tuyến)');
+   }).catch(err=>{
+     console.error(err);
+     updateSyncStatus('red','⚠️ Lỗi ghi đám mây (Kiểm tra Rules)');
+     showToast('Không thể lưu lên Firebase. Hãy kiểm tra lại Rules (.read/.write = true).');
+   });
+ }
+}
+
+function initCloudSync(customUrl){
+ const urlParams = new URLSearchParams(window.location.search);
+ const dbUrl = (customUrl ?? urlParams.get('db') ?? localStorage.getItem('ncc_firebase_db_url') ?? DEFAULT_FIREBASE_DB_URL).trim().replace(/\/+$/,'');
+ if($('firebaseDbUrl')) $('firebaseDbUrl').value = dbUrl;
+ if(!dbUrl){
+   cloudRef=null;
+   updateSyncStatus('amber','● Lưu cục bộ (Bấm để kết nối Đám mây)');
+   return;
+ }
+ if(!/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)$/i.test(dbUrl)){
+   updateSyncStatus('red','⚠️ Link Firebase không hợp lệ');
+   showToast('URL phải có đuôi .firebaseio.com hoặc .firebasedatabase.app');
+   return;
+ }
+ try{
+   localStorage.setItem('ncc_firebase_db_url', dbUrl);
+   updateSyncStatus('blue','↻ Đang kết nối đám mây...');
+   if(cloudRef) cloudRef.off();
+   const appName = 'app_' + btoa(dbUrl).replace(/[^a-zA-Z0-9]/g,'').slice(0,16);
+   let app = firebase.apps.find(a=>a.name===appName);
+   if(!app) app = firebase.initializeApp({ databaseURL: dbUrl }, appName);
+   cloudRef = firebase.database(app).ref('ncc_vehicle_manager_v1');
+   cloudRef.on('value', snapshot => {
+     const val = snapshot.val();
+     if(val && (Array.isArray(val.contractors) || Array.isArray(val.vehicles))){
+       isApplyingRemote = true;
+       db = normalizeDb(val);
+       localStorage.setItem('ncc_vehicle_manager_v1', JSON.stringify(db));
+       renderAll();
+       isApplyingRemote = false;
+       updateSyncStatus('green','☁️ Đã đồng bộ đám mây (Trực tuyến)');
+     } else if(db.contractors.length || db.vehicles.length){
+       // Đám mây đang trống nhưng máy cục bộ có dữ liệu -> đẩy dữ liệu cục bộ lên khởi tạo
+       save();
+     } else {
+       updateSyncStatus('green','☁️ Đã kết nối đám mây (Trực tuyến)');
+     }
+   }, err => {
+     console.error(err);
+     updateSyncStatus('red','⚠️ Lỗi quyền truy cập Firebase Rules');
+     showToast('Kết nối bị từ chối! Hãy bật .read và .write = true trong mục Rules của Firebase.');
+   });
+ }catch(e){
+   console.error(e);
+   updateSyncStatus('red','⚠️ Lỗi khởi tạo Firebase');
+ }
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmtDate(d){if(!d)return '—';const a=String(d).split('-');return a.length===3?`${a[2]}/${a[1]}/${a[0]}`:d}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function fmtNum(n){return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(n||0)}
+function statusClass(s){return s==='Đang hoạt động'?'green':s==='Hết hạn HĐ'?'amber':s==='Ngưng hoạt động'?'red':'blue'}
+function pill(s){return `<span class="pill ${statusClass(s)}">${esc(s||'Chưa có trạng thái')}</span>`}
+function showToast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.style.display='none',3000)}
+function navigate(page){currentPage=page;document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$('page-'+page).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const names={dashboard:'Tổng quan',contractors:'Danh sách nhà thầu',vehicles:'Danh sách phương tiện',report:'Tổng quan năng lực xe',data:'Dữ liệu & sao lưu'};$('crumb').textContent=names[page];if(page==='report')runReport();if(page==='dashboard')renderDashboard();if(window.innerWidth<1000)$('mobileMenu').textContent='☰'}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
+$('mobileMenu').addEventListener('click',()=>{const side=document.querySelector('.sidebar');side.style.display=side.style.display==='flex'?'none':'flex';side.style.position='absolute';side.style.zIndex=8;side.style.minHeight='100vh';side.style.width='245px'});
+function contractorByNo(no){return db.contractors.find(c=>c.contractNo===no)}
+function vehicleSupplier(v){const c=contractorByNo(v.contractNo);return c?c.name:''}
+function eligible(c,date){
+ if(!c||!date)return false;
+ if(c.startDate&&date<c.startDate)return false;
+ if(c.status==='Đang hoạt động')return true;
+ if(c.status==='Hết hạn HĐ')return !!c.endDate&&date<=c.endDate;
+ if(c.status==='Ngưng hoạt động')return !!c.stopDate&&date<c.stopDate;
+ return false;
+}
+function normalizedPlate(value){return String(value||'').trim().toUpperCase()}
+function normalizedText(value){return String(value??'').trim().toLowerCase()}
+function normalizedCargo(value){return normalizeCargo(value).map(x=>x.trim().toLowerCase()).sort()}
+function sameVehicleInfo(a,b){
+ const samePayload=Number(a.payload)===Number(b.payload);
+ const sameCargo=JSON.stringify(normalizedCargo(a.cargo))===JSON.stringify(normalizedCargo(b.cargo));
+ return samePayload&&sameCargo&&
+  normalizedText(a.trailer)===normalizedText(b.trailer)&&
+  normalizedText(a.dimensions)===normalizedText(b.dimensions)&&
+  classifyPayload(a.payload)===classifyPayload(b.payload);
+}
+function contractorIdentity(contractNo){
+ const c=contractorByNo(contractNo);if(!c)return '';
+ return normalizedText(c.taxId||c.name);
+}
+function vehicleIssues(v){
+ const issues=[];const c=contractorByNo(v.contractNo);
+ if(!v.plate)issues.push('Thiếu BSX');
+ if(!v.contractNo)issues.push('Thiếu số HĐ');
+ if(!c)issues.push('Không tìm thấy hợp đồng');
+ if(c&&v.supplierId&&c.taxId&&v.supplierId!==c.taxId)issues.push('Khác nhà thầu');
+ const plate=normalizedPlate(v.plate);
+ const same=db.vehicles.filter(x=>normalizedPlate(x.plate)===plate);
+ if(v.plate&&same.filter(x=>x.contractNo===v.contractNo).length>1)issues.push('Trùng BSX trong cùng HĐ');
+ if(same.length>1){
+   if(same.some(x=>!sameVehicleInfo(x,same[0])))issues.push('Thông tin xe không nhất quán (tải trọng, mặt hàng chở, rơ moóc hoặc kích thước)');
+   const suppliers=new Set(same.map(x=>contractorIdentity(x.contractNo)).filter(Boolean));
+   if(suppliers.size>1)issues.push('BSX thuộc nhiều nhà thầu');
+ }
+ if(c&&c.status==='Ngưng hoạt động'&&!c.stopDate)issues.push('Thiếu ngày ngưng HĐ');
+ if(c&&c.status==='Hết hạn HĐ'&&!c.endDate)issues.push('Thiếu ngày hết hạn HĐ');
+ return [...new Set(issues)];
+}
+function allIssues(){
+ const issues=[];
+ const seenNo=new Set();db.contractors.forEach(c=>{if(c.contractNo&&seenNo.has(c.contractNo))issues.push({type:'error',text:`Số hợp đồng bị trùng: ${c.contractNo}`});seenNo.add(c.contractNo);
+ if(c.status==='Ngưng hoạt động'&&!c.stopDate)issues.push({type:'error',text:`${c.contractNo}: thiếu ngày ngưng hợp tác`});
+ if(c.status==='Hết hạn HĐ'&&!c.endDate)issues.push({type:'error',text:`${c.contractNo}: thiếu ngày hết hạn hợp đồng`});
+ if(c.status==='Đang hoạt động'&&!c.startDate)issues.push({type:'warn',text:`${c.contractNo}: thiếu ngày bắt đầu hợp tác`});
+ });
+ db.vehicles.forEach(v=>vehicleIssues(v).forEach(t=>issues.push({type:'error',text:`${v.plate||'(chưa có BSX)'} / ${v.contractNo||'chưa có HĐ'}: ${t}`})));
+ return [...new Map(issues.map(i=>[i.text,i])).values()];
+}
+function distinctEligible(date){
+ const grouped=new Map();
+ db.vehicles.forEach(v=>{
+   const c=contractorByNo(v.contractNo);
+   if(!eligible(c,date)||!v.plate)return;
+   const key=v.plate.trim().toUpperCase();
+   if(!grouped.has(key))grouped.set(key,{plate:v.plate.trim(),vehicle:v,contracts:[],contractors:[],regions:new Set(),issue:false});
+   const g=grouped.get(key);g.contracts.push(v.contractNo);if(c&&!g.contractors.includes(c.name))g.contractors.push(c.name);
+   if(c)(c.regions||[]).forEach(r=>g.regions.add(r));
+   if(vehicleIssues(v).length)g.issue=true;
+ });
+ return [...grouped.values()];
+}
+function renderDashboard(){
+ const date=$('dashboardDate').value||$('reportDate').value||todayISO();
+ $('dashboardDate').value=date;
+ $('reportDate').value=date;
+ const eligibleContracts=db.contractors.filter(c=>eligible(c,date));
+ const vehicles=distinctEligible(date);
+ const eligibleSuppliers=new Set(eligibleContracts.map(c=>c.taxId||c.name).filter(Boolean));
+ $('mContractors').textContent=eligibleSuppliers.size;
+ $('mActiveContracts').textContent=eligibleContracts.length;
+ $('mVehicles').textContent=vehicles.length;
+ const year=date.slice(0,4);
+ const stoppedSuppliers=new Set(db.contractors.filter(c=>c.status==='Ngưng hoạt động'&&c.stopDate&&c.stopDate.slice(0,4)===year&&c.stopDate<=date).map(c=>c.taxId||c.name).filter(Boolean));
+ $('mStopped').textContent=stoppedSuppliers.size;
+ const future=new Date(date+'T12:00:00');future.setDate(future.getDate()+30);const futureISO=`${future.getFullYear()}-${String(future.getMonth()+1).padStart(2,'0')}-${String(future.getDate()).padStart(2,'0')}`;
+ const exp=db.contractors.filter(c=>c.endDate&&c.endDate>=date&&c.endDate<=futureISO).sort((a,b)=>a.endDate.localeCompare(b.endDate));
+ $('expiringRows').innerHTML=exp.length?exp.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.contractNo)}</td><td>${fmtDate(c.endDate)}</td><td>${pill(c.status)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Không có hợp đồng hết hạn trong 30 ngày tới tính từ ngày thống kê.</td></tr>';
+}
+function renderContractors(){
+ const q=$('contractorSearch').value.toLowerCase(), st=$('contractorStatus').value, reg=$('contractorRegion').value;
+ const rows=db.contractors.filter(c=>(!q||[c.name,c.commonName,c.taxId,c.phone,c.contractNo,c.manager].some(x=>String(x||'').toLowerCase().includes(q)))&&(!st||c.status===st)&&(!reg||(c.regions||[]).includes(reg)));
+ $('contractorRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="muted small">${esc(c.address||'')}</div></td><td>${esc(c.commonName||'—')}</td><td>${esc(c.taxId||'—')}</td><td>${esc(c.phone||'—')}</td><td><b>${esc(c.contractNo)}</b></td><td>${fmtDate(c.startDate)}</td><td>${fmtDate(c.endDate)}</td><td>${c.creditDays??'—'}</td><td>${esc((c.regions||[]).join(', ')||'—')}</td><td>${esc(c.manager||'—')}</td><td>${pill(c.status)}</td><td><div class="row-actions"><button onclick="editContractor('${esc(c.id)}')">Sửa</button><button class="danger" onclick="deleteContractor('${esc(c.id)}')">Xóa</button></div></td></tr>`).join(''):'<tr><td colspan="12" class="empty">Chưa có hợp đồng phù hợp. Nhấn “Thêm hợp đồng” để bắt đầu.</td></tr>';
+}
+function renderVehicles(){
+ const q=$('vehicleSearch').value.toLowerCase(), cl=$('vehicleClass').value, st=$('vehicleStatus').value;
+ const rows=db.vehicles.filter(v=>(!q||[v.plate,v.trailer,v.contractNo,vehicleSupplier(v),v.cargo].some(x=>String(x||'').toLowerCase().includes(q)))&&(!cl||v.className===cl)&&(!st||(contractorByNo(v.contractNo)||{}).status===st));
+ $('vehicleRows').innerHTML=rows.length?rows.map(v=>{const c=contractorByNo(v.contractNo);return `<tr><td><b>${esc(v.plate)}</b></td><td>${esc(v.trailer||'—')}</td><td>${fmtNum(num(v.payload))}</td><td>${esc(v.dimensions||'—')}</td><td>${esc(v.className||'—')}</td><td>${esc(normalizeCargo(v.cargo).join(', ')||'—')}</td><td><b>${esc(v.contractNo)}</b></td><td>${esc(c?c.name:'Không tìm thấy HĐ')}</td><td>${pill(c?c.status:'Thiếu hợp đồng')}</td><td><div class="row-actions"><button onclick="editVehicle('${esc(v.id)}')">Sửa</button><button class="danger" onclick="deleteVehicle('${esc(v.id)}')">Xóa</button></div></td></tr>`}).join(''):'<tr><td colspan="10" class="empty">Chưa có phương tiện phù hợp.</td></tr>';
+}
+function runReport(){
+ const date=$('reportDate').value||todayISO();$('reportDate').value=date;
+ const vehicles=distinctEligible(date);lastReport={date,vehicles};
+ $('reportDateLabel').textContent='Ngày '+fmtDate(date);
+ const isCont=g=>String(g.vehicle.className||'').trim().toLowerCase().includes('cont');
+ const contVehicles=vehicles.filter(isCont), truckVehicles=vehicles.filter(g=>!isCont(g));
+ $('rVehicleCount').textContent=vehicles.length;
+ $('rTruckCount').textContent=truckVehicles.length;
+ $('rContCount').textContent=contVehicles.length;
+ const year=date.slice(0,4);
+ const stoppedPlates=new Set();
+ const eligiblePlates=new Set(vehicles.map(g=>String(g.plate||'').trim().toUpperCase()));
+ db.vehicles.forEach(v=>{
+   const c=contractorByNo(v.contractNo);
+   if(c&&c.status==='Ngưng hoạt động'&&c.stopDate&&c.stopDate.slice(0,4)===year&&c.stopDate<=date){
+     const plate=String(v.plate||'').trim().toUpperCase();
+     if(plate&&!eligiblePlates.has(plate)) stoppedPlates.add(plate);
+   }
+ });
+ $('rStoppedVehicles').textContent=stoppedPlates.size;
+ // Provisional groups: exact class labels are used until the user supplies detailed rounding/mapping rules.
+ const buckets=['2T','5T','8T','10T','15T','18T','Cont'];
+ const counts=Object.fromEntries(buckets.map(k=>[k,0]));
+ let otherCount=0;
+ vehicles.forEach(g=>{
+   const raw=String(g.vehicle.className||'').trim().toLowerCase().replace(/\s+/g,'');
+   if(raw.includes('cont')) counts['Cont']++;
+   else {
+     const found=buckets.find(k=>k!=='Cont'&&raw===k.toLowerCase());
+     if(found) counts[found]++; else otherCount++;
+   }
+ });
+ if(otherCount) counts['Khác / chưa phân loại']=otherCount;
+ const max=Math.max(1,...Object.values(counts));
+ $('reportBars').innerHTML=Object.entries(counts).map(([k,n])=>`<div class="barrow"><span>${esc(k)}</span><div class="bartrack"><div class="barfill" style="width:${n/max*100}%"></div></div><b>${n}</b></div>`).join('');
+ const entries=Object.entries(counts);
+ $('reportRows').innerHTML=entries.map(([k,n])=>`<tr><td>${esc(k)}</td><td>${n}</td><td>${vehicles.length?fmtNum(n/vehicles.length*100)+'%':'0%'}</td></tr>`).join('');
+ $('reportFoot').innerHTML=`<tr><th>Tổng cộng</th><th>${vehicles.length}</th><th>${vehicles.length?'100%':'0%'}</th></tr>`;
+ const regionCounts={};
+ vehicles.forEach(g=>g.regions.forEach(r=>{
+   if(!regionCounts[r])regionCounts[r]={truck:new Set(),cont:new Set()};
+   regionCounts[r][isCont(g)?'cont':'truck'].add(g.plate.toUpperCase());
+ }));
+ $('regionReportRows').innerHTML=REGIONS.map(r=>`<tr><td>${esc(r)}</td><td>${regionCounts[r]?.truck.size||0}</td><td>${regionCounts[r]?.cont.size||0}</td></tr>`).join('');
+ renderDashboard();
+}
+function renderAll(){
+ populateSelects();renderContractors();renderVehicles();renderDashboard();if(currentPage==='report')runReport();
+}
+function populateSelects(){
+ const fill=(id,items,placeholder)=>{const el=$(id),old=el.value;el.innerHTML=`<option value="">${placeholder}</option>`+items.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(items.includes(old))el.value=old};
+ fill('contractorRegion',REGIONS,'Tất cả khu vực');fill('vehicleClass',[...new Set(db.vehicles.map(v=>v.className).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi')),'Tất cả phân loại');
+}
+function field(label,name,type='text',value='',opts=null,extra=''){
+ let input='';
+ if(type==='select')input=`<select name="${name}" ${extra}>${opts.map(o=>`<option value="${esc(o.value)}" ${String(o.value)===String(value)?'selected':''}>${esc(o.label)}</option>`).join('')}</select>`;
+ else if(type==='multi')input=`<div style="display:flex;gap:8px;flex-wrap:wrap">${opts.map(o=>`<label class="checkline"><input type="checkbox" name="${name}" value="${esc(o)}" ${(value||[]).includes(o)?'checked':''}> ${esc(o)}</label>`).join('')}</div>`;
+ else if(type==='textarea')input=`<textarea name="${name}" ${extra}>${esc(value)}</textarea>`;
+ else input=`<input type="${type}" name="${name}" value="${esc(value)}" ${extra}>`;
+ return `<div class="field"><label>${label}</label>${input}</div>`;
+}
+function openModal(kind,obj=null){
+ editState={kind,id:obj?.id||null};const c=obj||{};
+ $('modalTitle').textContent=(obj?'Sửa ':'Thêm ')+(kind==='contractor'?'hợp đồng nhà thầu':'phương tiện');
+ let fields='';
+ if(kind==='contractor'){
+  fields=`<div class="gridform">
+  ${field('Tên nhà thầu theo hợp đồng *','name','text',c.name||'','','required')}
+  ${field('Tên thường gọi','commonName','text',c.commonName||'')}
+  ${field('MST/CCCD','taxId','text',c.taxId||'')}
+  ${field('Số điện thoại','phone','tel',c.phone||'')}
+  ${field('Địa chỉ xuất hóa đơn','address','text',c.address||'')}
+  ${field('Số hợp đồng *','contractNo','text',c.contractNo||'','','required')}
+  ${field('Ngày bắt đầu hợp tác','startDate','date',c.startDate||'')}
+  ${field('Ngày hết hạn hợp đồng','endDate','date',c.endDate||'')}
+  ${field('Ngày công nợ (ngày)','creditDays','number',c.creditDays??'',null,'min="0" step="1"')}
+  ${field('Khu vực hoạt động','regions','multi',c.regions||[],REGIONS)}
+  ${field('Nhân sự phụ trách','manager','text',c.manager||'')}
+  ${field('Tình trạng hợp tác *','status','select',c.status||'Đang hoạt động',STATUSES.map(s=>({value:s,label:s})))}
+  ${field('Ngày ngưng hợp tác','stopDate','date',c.stopDate||'')}
+  ${field('Ghi chú','notes','textarea',c.notes||'')}
+  </div>`;
+ }else{
+  const contracts=db.contractors.map(x=>({value:x.contractNo,label:`${x.contractNo} — ${x.name}`}));if(c.contractNo&&!contracts.some(x=>x.value===c.contractNo))contracts.unshift({value:c.contractNo,label:c.contractNo+' (không tìm thấy HĐ)'});
+  fields=`<div class="gridform">
+  ${field('Biển số xe *','plate','text',c.plate||'','','required')}
+  ${field('Biển số rơ moóc','trailer','text',c.trailer||'')}
+  ${field('Tải trọng thực tế (tấn) *','payload','number',c.payload??'',null,'min="0" step="0.01" required')}
+  ${field('Kích thước xe','dimensions','text',c.dimensions||'')}
+  ${field('Phân loại tải trọng','className','text',classifyPayload(c.payload) || c.className || '',null,'readonly')}
+  ${field('Mặt hàng có thể chở','cargo','multi',normalizeCargo(c.cargo),CARGO_TYPES)}
+  ${field('Số hợp đồng *','contractNo','select',c.contractNo||'',contracts,'required')}
+  ${field('Ghi chú','notes','textarea',c.notes||'')}
+  </div>`;
+ }
+ $('modalFields').innerHTML=fields;$('modalHint').textContent='Các trường có dấu * là bắt buộc.';$('modalBackdrop').classList.add('show');
+ if(kind==='vehicle'){const payloadInput=$('modalFields').querySelector('[name="payload"]'),classInput=$('modalFields').querySelector('[name="className"]');const updateClass=()=>{classInput.value=classifyPayload(payloadInput.value)};payloadInput.addEventListener('input',updateClass);updateClass();}
+}
+function closeModal(){$('modalBackdrop').classList.remove('show');editState=null}
+$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal()});
+$('editForm').addEventListener('submit',e=>{
+ e.preventDefault();if(!editState)return;const kind=editState.kind,fd=new FormData(e.target);let data={};for(const [k,v] of fd.entries()){if(k==='regions'||k==='cargo')continue;data[k]=v}
+ if(kind==='contractor'){
+  data.regions=[...e.target.querySelectorAll('input[name="regions"]:checked')].map(x=>x.value);
+  data.creditDays=data.creditDays===''?'':Number(data.creditDays);data.status=data.status||'Đang hoạt động';
+  if(!data.name.trim()||!data.contractNo.trim()){showToast('Vui lòng nhập tên nhà thầu và số hợp đồng.');return}
+  const duplicate=db.contractors.some(c=>c.contractNo.trim().toLowerCase()===data.contractNo.trim().toLowerCase()&&c.id!==editState.id);if(duplicate){showToast('Số hợp đồng đã tồn tại. Mỗi số hợp đồng phải duy nhất.');return}
+  if(data.status==='Ngưng hoạt động'&&!data.stopDate){if(!confirm('Trạng thái Ngưng hoạt động nhưng chưa nhập ngày ngưng. Vẫn lưu để bổ sung sau?'))return}
+  if(data.status==='Hết hạn HĐ'&&!data.endDate){if(!confirm('Trạng thái Hết hạn HĐ nhưng chưa nhập ngày hết hạn. Vẫn lưu để bổ sung sau?'))return}
+ }else{
+  data.payload=Number(data.payload);data.className=classifyPayload(data.payload);data.cargo=[...e.target.querySelectorAll('input[name="cargo"]:checked')].map(x=>x.value);if(!data.plate.trim()||!data.contractNo||!data.className||!Number.isFinite(data.payload)||data.payload<0){showToast('Vui lòng nhập BSX, tải trọng hợp lệ và chọn số hợp đồng.');return}
+  data.plate=normalizedPlate(data.plate);data.trailer=(data.trailer||'').trim().toUpperCase();data.dimensions=(data.dimensions||'').trim();
+  if(!contractorByNo(data.contractNo)){showToast('Số hợp đồng không tồn tại. Hãy tạo hợp đồng trước.');return}
+  const samePlate=db.vehicles.filter(v=>v.id!==editState.id&&normalizedPlate(v.plate)===data.plate);
+  const duplicate=samePlate.some(v=>v.contractNo===data.contractNo);if(duplicate){showToast('BSX này đã có trong hợp đồng đó. Không thể lưu trùng.');return}
+  const otherSupplier=samePlate.some(v=>contractorIdentity(v.contractNo)!==contractorIdentity(data.contractNo));if(otherSupplier){showToast('Một xe chỉ được thuộc một nhà thầu. Không thể liên kết BSX này với nhà thầu khác.');return}
+  const inconsistent=samePlate.some(v=>!sameVehicleInfo(v,data));if(inconsistent){showToast('BSX này đã tồn tại ở hợp đồng khác nhưng thông tin tải trọng, mặt hàng chở, rơ moóc hoặc kích thước không giống nhau. Vui lòng thống nhất thông tin xe trước khi lưu.');return}
+ }
+ if(editState.id){const arr=kind==='contractor'?db.contractors:db.vehicles;const i=arr.findIndex(x=>x.id===editState.id);if(i>=0)arr[i]={...arr[i],...data}}
+ else{data.id=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();(kind==='contractor'?db.contractors:db.vehicles).push(data)}
+ closeModal();save();showToast('Đã lưu dữ liệu.');
+});
+function editContractor(id){const c=db.contractors.find(x=>x.id===id);if(c)openModal('contractor',c)}
+function editVehicle(id){const v=db.vehicles.find(x=>x.id===id);if(v)openModal('vehicle',v)}
+function deleteContractor(id){const c=db.contractors.find(x=>x.id===id);if(!c)return;const linked=db.vehicles.filter(v=>v.contractNo===c.contractNo).length;if(!confirm(`Xóa hợp đồng ${c.contractNo}? ${linked?linked+' dòng phương tiện đang liên kết sẽ không bị xóa nhưng sẽ thành thiếu hợp đồng.':''}`))return;db.contractors=db.contractors.filter(x=>x.id!==id);save();showToast('Đã xóa hợp đồng.')}
+function deleteVehicle(id){if(!confirm('Xóa dòng phương tiện này?'))return;db.vehicles=db.vehicles.filter(x=>x.id!==id);save();showToast('Đã xóa dòng phương tiện.')}
+$('addContractor').onclick=()=>openModal('contractor');$('addVehicle').onclick=()=>{if(!db.contractors.length){showToast('Hãy tạo nhà thầu/hợp đồng trước.');navigate('contractors');return}openModal('vehicle')};
+$('quickAdd').onclick=()=>openModal(currentPage==='vehicles'?'vehicle':'contractor');
+['contractorSearch','contractorStatus','contractorRegion'].forEach(id=>$(id).addEventListener('input',renderContractors));
+['vehicleSearch','vehicleClass','vehicleStatus'].forEach(id=>$(id).addEventListener('input',renderVehicles));
+$('reportDate').value=todayISO();$('dashboardDate').value=todayISO();
+$('runReport').onclick=runReport;
+$('reportDate').addEventListener('change',()=>{ $('dashboardDate').value=$('reportDate').value;runReport();renderDashboard();});
+$('dashboardDate').addEventListener('change',()=>{ $('reportDate').value=$('dashboardDate').value;renderDashboard();runReport();});
+function downloadBlob(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
+function exportJson(){downloadBlob('sao-luu-quan-ly-nha-thau-phuong-tien-'+todayISO()+'.json',JSON.stringify(db,null,2),'application/json');showToast('Đã tạo bản sao lưu.')}
+$('exportJson').onclick=exportJson;$('exportJsonTop').onclick=exportJson;
+$('importJson').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());if(!Array.isArray(parsed.contractors)||!Array.isArray(parsed.vehicles))throw new Error('Cấu trúc không hợp lệ');if(!confirm('Nhập tệp sẽ thay thế toàn bộ dữ liệu hiện có. Tiếp tục?'))return;db=parsed;save();showToast('Đã nhập bản sao lưu.')}catch(err){showToast('Không đọc được tệp JSON hợp lệ.')}e.target.value=''});
+$('clearData').onclick=()=>{if(!confirm('Bạn chắc chắn muốn xóa toàn bộ nhà thầu và phương tiện trên trình duyệt này?'))return;db={contractors:[],vehicles:[]};save();showToast('Đã xóa dữ liệu.')};
+$('downloadReport').onclick=()=>{const r=lastReport||{date:$('reportDate').value,vehicles:distinctEligible($('reportDate').value)};const isCont=g=>String(g.vehicle.className||'').trim().toLowerCase().includes('cont');const lines=[['Ngày thống kê',r.date],[],['Chỉ tiêu','Số lượng'],['Tổng số lượng xe',r.vehicles.length],['Tổng số xe tải',r.vehicles.filter(g=>!isCont(g)).length],['Tổng số xe cont',r.vehicles.filter(isCont).length],[],['Phân loại tải trọng','Số lượng xe']];const buckets=['2T','5T','8T','10T','15T','18T','Cont'];const counts=Object.fromEntries(buckets.map(k=>[k,0]));let other=0;r.vehicles.forEach(g=>{const raw=String(g.vehicle.className||'').trim().toLowerCase().replace(/\s+/g,'');if(raw.includes('cont'))counts.Cont++;else{const found=buckets.find(k=>k!=='Cont'&&raw===k.toLowerCase());if(found)counts[found]++;else other++;}});Object.entries(counts).forEach(([k,n])=>lines.push([k,n]));if(other)lines.push(['Khác / chưa phân loại',other]);const csv='\uFEFF'+lines.map(row=>row.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');downloadBlob('tong-quan-nang-luc-xe-'+r.date+'.csv',csv,'text/csv;charset=utf-8');};
+$('saveCloudUrl').onclick=()=>{
+ const url=$('firebaseDbUrl').value.trim();
+ if(!url){showToast('Vui lòng dán Firebase Realtime Database URL.');return;}
+ initCloudSync(url);
+ showToast('Đang kết nối tới cơ sở dữ liệu đám mây...');
+};
+$('disconnectCloud').onclick=()=>{
+ if(cloudRef) cloudRef.off();
+ cloudRef=null;
+ localStorage.removeItem('ncc_firebase_db_url');
+ $('firebaseDbUrl').value='';
+ updateSyncStatus('amber','● Lưu cục bộ (Đã ngắt kết nối)');
+ showToast('Đã ngắt kết nối đám mây. Dữ liệu hiện lưu trên trình duyệt này.');
+};
+$('copyShareLink').onclick=()=>{
+ const url=$('firebaseDbUrl').value.trim() || localStorage.getItem('ncc_firebase_db_url') || DEFAULT_FIREBASE_DB_URL;
+ if(!url){showToast('Hãy kết nối Firebase URL trước khi tạo link chia sẻ.');return;}
+ const shareUrl = window.location.origin + window.location.pathname + '?db=' + encodeURIComponent(url.replace(/\/+$/,''));
+ navigator.clipboard.writeText(shareUrl).then(()=>showToast('Đã copy link chia sẻ! Gửi link này cho mọi người để vào thẳng kho dữ liệu chung.')).catch(()=>prompt('Copy link chia sẻ dưới đây:', shareUrl));
+};
+function renderAllInitial(){renderAll();runReport();initCloudSync();}
+renderAllInitial();
+</script>
+</body>
+</html>
